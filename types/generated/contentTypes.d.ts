@@ -514,6 +514,10 @@ export interface PluginContentReleasesRelease extends Schema.CollectionType {
     releasedAt: Attribute.DateTime;
     scheduledAt: Attribute.DateTime;
     timezone: Attribute.String;
+    status: Attribute.Enumeration<
+      ['ready', 'blocked', 'failed', 'done', 'empty']
+    > &
+      Attribute.Required;
     actions: Attribute.Relation<
       'plugin::content-releases.release',
       'oneToMany',
@@ -568,6 +572,7 @@ export interface PluginContentReleasesReleaseAction
       'manyToOne',
       'plugin::content-releases.release'
     >;
+    isEntryValid: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -841,7 +846,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   attributes: {
     Name: Attribute.String;
-    Icon: Attribute.Media;
+    Icon: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     doctors: Attribute.Relation<
       'api::category.category',
       'manyToMany',
@@ -895,7 +900,7 @@ export interface ApiDoctorDoctor extends Schema.CollectionType {
       'api::category.category'
     >;
     Phone: Attribute.String;
-    image: Attribute.Media;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     Premium: Attribute.Boolean & Attribute.DefaultTo<true>;
     appointments: Attribute.Relation<
       'api::doctor.doctor',
@@ -935,7 +940,7 @@ export interface ApiHospitalHospital extends Schema.CollectionType {
   attributes: {
     Name: Attribute.String;
     Address: Attribute.String;
-    image: Attribute.Media;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     Email: Attribute.Email;
     Website: Attribute.String;
     Phone: Attribute.Integer;
@@ -982,7 +987,8 @@ export interface ApiSliderSlider extends Schema.CollectionType {
   };
   attributes: {
     Name: Attribute.String & Attribute.Required;
-    Image: Attribute.Media & Attribute.Required;
+    Image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
